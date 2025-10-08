@@ -30,4 +30,4 @@ jobs:
           context: ./reactdummyec2
           file: ./reactdummyec2/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/harim1:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/reactdummyec2:latest
