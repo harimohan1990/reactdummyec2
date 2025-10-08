@@ -1,7 +1,7 @@
 # ---------------------------------------------
 # STAGE 1 — Build the React/Vite application
 # ---------------------------------------------
-FROM node:20.19.0-alpine AS build
+FROM node:20.19.0-bullseye AS build
 
 # Set working directory inside the container
 WORKDIR /my-app
