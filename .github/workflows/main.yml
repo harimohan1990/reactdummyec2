@@ -3,9 +3,9 @@ name: cicd
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./reactdummyec2
+          file: ./reactdummyec2/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/harim1:latest
