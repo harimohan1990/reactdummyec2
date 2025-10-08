@@ -1,10 +1,11 @@
 name: cicd
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -29,4 +30,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/react-to-ec21:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/harim1:latest
