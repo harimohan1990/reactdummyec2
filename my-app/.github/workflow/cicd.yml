@@ -3,7 +3,7 @@ name: cicd
 on:
   push:
     branches:
-      - react-to-ec21
+      - master
 
 jobs:
   build:
