@@ -6,8 +6,45 @@ on:
     branches: [ "main", "master" ]
 
 jobs:
-  build_and_deploy:
+  infra:
+    name: Provision EC2 Infrastructure via Terraform
     runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      # Step 3 — Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infra
+
+      # Step 4 — Validate Terraform
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./infra
+
+      # Step 5 — Plan Terraform
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./infra
+
+      # Step 6 — Apply Terraform (auto-approve)
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./infra
+
+  build_and_deploy:
+    name: Build, Push & Deploy
+    runs-on: ubuntu-latest
+    needs: infra  # wait until Terraform finishes first
 
     steps:
       # Step 1 — Checkout source
@@ -42,7 +79,8 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: |
+            ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "🚀 Pulling latest Docker image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/harim1:latest
